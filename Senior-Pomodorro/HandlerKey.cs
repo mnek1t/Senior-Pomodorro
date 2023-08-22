@@ -10,37 +10,40 @@ namespace Senior_Pomodorro
     delegate void KeyDelegate();
     static class HandlerKey
     {
-        static KeyDelegate keyDelegate;
-        public static void Pause() 
+        public static void Pause()
         {
             Console.WriteLine("Enter 'Enter' key to continue the timer...");
             Console.ReadLine(); //sort of pause in the system 
             Console.WriteLine("Timer is resumed!");
         }
-        public static void Exit() 
+        public static void Exit()
         {
-            
-        }  
+
+        }
         public static void Continue()
         {
 
         }
         public static KeyDelegate KeyHandler() // hand a pressed key
         {
-            ConsoleKeyInfo key = Console.ReadKey(intercept:true);
-            if(key.Key == ConsoleKey.Spacebar)
+            if (Console.KeyAvailable) 
             {
-                Console.WriteLine("Pause");
-                return Pause;
+                ConsoleKeyInfo key = Console.ReadKey(intercept: true);
+                if (key.Key == ConsoleKey.Spacebar)
+                {
+                    Console.WriteLine("Pause");
+                    return Pause;
+                }
+                else if (key.Key == ConsoleKey.Escape)
+                {
+                    return Exit;
+                }
+                else
+                {
+                    return Continue;
+                }
             }
-            else if (key.Key == ConsoleKey.Escape)
-            {
-                return Exit;
-            }
-            else
-            {
-                return Continue;
-            }
+            return Continue;
         }
     }
 }

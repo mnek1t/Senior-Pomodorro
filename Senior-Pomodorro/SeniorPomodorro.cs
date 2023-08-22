@@ -7,7 +7,7 @@ namespace Senior_Pomodorro
 {
     class SeniorPomodorro : Melody
     {
-        
+        private KeyDelegate key;
         private TimeSpan timer; // Time after which you want to play the melody
         private Thread StartMelody = new Thread(Grasshoper); // for starting playing melody with displaying a MessageBox
         private TimeSpan IsCorrectInput(TimeSpan time)
@@ -56,10 +56,11 @@ namespace Senior_Pomodorro
             Console.WriteLine("SpaceBar to pause the timer\n" +
                 "Escape key to exit the programm\n" +
                 "Enter to continue the timer\n");
-            bool shouldDisplayMessageBox = false; 
+            bool shouldDisplayMessageBox = false;
+            //Thread keyThread = new Thread(new ThreadStart(key));
             for (int i = 0; i <= timer.TotalSeconds; i++)
             {
-                KeyDelegate key = HandlerKey.KeyHandler();
+                key = HandlerKey.KeyHandler();
                 key.Invoke();
                 if(key == HandlerKey.Exit)
                 {
