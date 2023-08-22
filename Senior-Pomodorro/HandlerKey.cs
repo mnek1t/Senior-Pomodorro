@@ -3,36 +3,44 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 
 namespace Senior_Pomodorro
 {
+    delegate void KeyDelegate();
     static class HandlerKey
     {
-        public static string KeyHandler() // hand a pressed key
+        static KeyDelegate keyDelegate;
+        public static void Pause() 
         {
-            if (Console.KeyAvailable == true) //keystroke is available
+            Console.WriteLine("Enter 'Enter' key to continue the timer...");
+            Console.ReadLine(); //sort of pause in the system 
+            Console.WriteLine("Timer is resumed!");
+        }
+        public static void Exit() 
+        {
+            
+        }  
+        public static void Continue()
+        {
+
+        }
+        public static KeyDelegate KeyHandler() // hand a pressed key
+        {
+            ConsoleKeyInfo key = Console.ReadKey(intercept:true);
+            if(key.Key == ConsoleKey.Spacebar)
             {
-                switch (Console.ReadKey(intercept: true).Key)
-                {
-                    case ConsoleKey.Spacebar:
-                        {
-                            Console.WriteLine("Pause");
-                            return "Pause";
-                        }
-                    case ConsoleKey.Escape:
-                        {
-                            Console.WriteLine("Exit");
-                            return "Exit";
-                        }
-                    case ConsoleKey.Enter:
-                        {
-                            return "Continue";
-                        }
-                    default:
-                        return " ";
-                }
+                Console.WriteLine("Pause");
+                return Pause;
             }
-            return " ";
+            else if (key.Key == ConsoleKey.Escape)
+            {
+                return Exit;
+            }
+            else
+            {
+                return Continue;
+            }
         }
     }
 }

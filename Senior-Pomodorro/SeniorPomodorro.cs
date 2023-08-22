@@ -6,7 +6,8 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 namespace Senior_Pomodorro
 {
     class SeniorPomodorro : Melody
-    {      
+    {
+        
         private TimeSpan timer; // Time after which you want to play the melody
         private Thread StartMelody = new Thread(Grasshoper); // for starting playing melody with displaying a MessageBox
         private TimeSpan IsCorrectInput(TimeSpan time)
@@ -58,17 +59,13 @@ namespace Senior_Pomodorro
             bool shouldDisplayMessageBox = false; 
             for (int i = 0; i <= timer.TotalSeconds; i++)
             {
-                if (HandlerKey.KeyHandler().ToLower() == "pause")
-                {
-                    Console.WriteLine("Enter 'Enter' key to continue the timer...");
-                    Console.ReadLine(); //sort of pause in the system 
-                    Console.WriteLine("Timer is resumed!");
-                }
-                if (HandlerKey.KeyHandler().ToLower() == "exit")
+                KeyDelegate key = HandlerKey.KeyHandler();
+                key.Invoke();
+                if(key == HandlerKey.Exit)
                 {
                     shouldDisplayMessageBox = false;
                     break;
-                }
+                }                
                 Thread.Sleep(1000); // repeat iterarion after 1 second
                 shouldDisplayMessageBox = true;
             }
