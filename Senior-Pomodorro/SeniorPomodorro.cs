@@ -1,87 +1,82 @@
 ﻿using System;
 using System.Threading;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace Senior_Pomodorro
 {
-    class SeniorPomodorro : Melody
+    class SeniorPomodorro 
     {
-        private KeyDelegate key;
-        private TimeSpan timer; // Time after which you want to play the melody
-        private Thread StartMelody = new Thread(Grasshoper); // for starting playing melody with displaying a MessageBox
-        private TimeSpan IsCorrectInput(TimeSpan time)
+        private class Melody
         {
-            if (time.Seconds >= 60)
+            public static void Grasshoper()
             {
-                int minutes = time.Minutes + 1;
-                if (minutes >= 60)
-                {
-                    int hours = time.Hours + 1;
-                    if (hours >= 24)
-                    {
-                        return new TimeSpan(24, 0, 0);
-                    }
-                   return new TimeSpan(time.Hours, 0, 0);
-                }
-                return new TimeSpan(time.Hours, minutes, 0);
+                Console.Beep(440, 300);
+                Console.Beep(330, 300);
+                Console.Beep(440, 300);
+                Console.Beep(330, 300);
+                Console.Beep(440, 300);
+                Console.Beep(415, 300);
+                Console.Beep(415, 300);
+                Thread.Sleep(600);
+                Console.Beep(415, 300);
+                Console.Beep(330, 300);
+                Console.Beep(415, 300);
+                Console.Beep(330, 300);
+                Console.Beep(415, 300);
+                Console.Beep(440, 300);
+                Console.Beep(440, 300);
+                Thread.Sleep(600);
+                Console.Beep(440, 300);
+                Console.Beep(494, 300);
+                Console.Beep(494, 100);
+                Console.Beep(494, 100);
+                Console.Beep(494, 300);
+                Console.Beep(494, 300);
+                Console.Beep(523, 300);
+                Console.Beep(523, 100);
+                Console.Beep(523, 100);
+                Console.Beep(523, 300);
+                Console.Beep(523, 300);
+                Console.Beep(523, 300);
+                Console.Beep(494, 300);
+                Console.Beep(440, 300);
+                Console.Beep(415, 300);
+                Console.Beep(440, 800);
             }
-            else
-            {
-                return time;
-            }
-        }
-        private string Printer(TimeSpan timer)
+        } // here I save melody
+        private KeyDelegate getKey;
+        private readonly TimeSpan timer = new TimeSpan(0,30,0); // Time after which you want to play the melody
+        public bool StartTimer()
         {
-            if (timer.Hours > 1)
-            {
-               return $"Timer is set on: {timer.Hours} hours, {timer.Minutes}minutes and {timer.Seconds} seconds\n";
-            }
-            else if (timer.Minutes > 1 && timer.Hours < 1)
-            {
-                return $"Timer is set on: {timer.Minutes} minutes and {timer.Seconds} seconds\n";
-            }
-            else
-            {
-                return $"Timer is set on: {timer.Seconds} seconds\n";
-            }
-        }
-        public SeniorPomodorro(TimeSpan time) //Initialize timer by user input
-        {
-            timer = IsCorrectInput(time);
-            Console.WriteLine(Printer(timer));
-        }
-        public void StartTimer()
-        {
-            Console.WriteLine("SpaceBar to pause the timer\n" +
-                "Escape key to exit the programm\n" +
-                "Enter to continue the timer\n");
+            Console.WriteLine("TIMER IS STARTED AND SET ON 30 MINUTES\n\nPress:\nSpaceBar to pause the timer\nEscape key to exit the programm\n");
             bool shouldDisplayMessageBox = false;
-            //Thread keyThread = new Thread(new ThreadStart(key));
+            DialogResult res; // create dialog window
             for (int i = 0; i <= timer.TotalSeconds; i++)
             {
-                key = HandlerKey.KeyHandler();
-                key.Invoke();
-                if(key == HandlerKey.Exit)
+                getKey = HandlerKey.KeyHandler();
+                getKey?.Invoke();
+                if (getKey == HandlerKey.Exit)
                 {
                     shouldDisplayMessageBox = false;
-                    break;
+                    return false;
                 }                
                 Thread.Sleep(1000); // repeat iterarion after 1 second
                 shouldDisplayMessageBox = true;
             }
-            if (shouldDisplayMessageBox == true)
+            if (shouldDisplayMessageBox == true) //if user dont press key or cycle is over
             {
-                StartMelody.Start();
                 Console.WriteLine("TIMER IS UP!!");
-                DialogResult res = MessageBox.Show("Please turn off the timer", "ATTENTION");
+                Melody.Grasshoper();
+                res = MessageBox.Show("Please turn off the timer", "TIMER IS UP!!"); //display messageBox
                 if (res == DialogResult.OK || res == DialogResult.Cancel)
                 {
-                    StartMelody.Interrupt();
-                    Application.Exit();
+                    Application.Exit(); // close MessageBox
+                    return true;
                 }
+                return false;
             }
-        }
+            return true;
+        } 
         
     }
 }

@@ -12,38 +12,33 @@ namespace Senior_Pomodorro
     {
         public static void Pause()
         {
-            Console.WriteLine("Enter 'Enter' key to continue the timer...");
+            Console.WriteLine("Pause\nEnter 'Enter' key to continue the timer...");
             Console.ReadLine(); //sort of pause in the system 
             Console.WriteLine("Timer is resumed!");
         }
         public static void Exit()
         {
-
-        }
-        public static void Continue()
-        {
-
+            Console.WriteLine("Exit");
         }
         public static KeyDelegate KeyHandler() // hand a pressed key
         {
-            if (Console.KeyAvailable) 
+            if (Console.KeyAvailable) //it's like if key is pressed 
             {
-                ConsoleKeyInfo key = Console.ReadKey(intercept: true);
-                if (key.Key == ConsoleKey.Spacebar)
+                ConsoleKeyInfo pressedKey = Console.ReadKey(intercept: true);//arg[0] - ignore output
+                if (pressedKey.Key == ConsoleKey.Spacebar)
                 {
-                    Console.WriteLine("Pause");
                     return Pause;
                 }
-                else if (key.Key == ConsoleKey.Escape)
+                else if (pressedKey.Key == ConsoleKey.Escape)
                 {
                     return Exit;
                 }
                 else
                 {
-                    return Continue;
+                    return null;
                 }
             }
-            return Continue;
+            return null;
         }
     }
 }
