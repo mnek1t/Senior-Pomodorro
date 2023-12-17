@@ -45,10 +45,10 @@ namespace Senior_Pomodorro
             }
         } // here I save melody
         private KeyDelegate getKey;
-        private readonly TimeSpan timer = new TimeSpan(0,30,0); // Time after which you want to play the melody
+        private readonly TimeSpan timer = new TimeSpan(0,0,3); // Time after which you want to play the melody
         public bool StartTimer()
         {
-            Console.WriteLine("TIMER IS STARTED AND SET ON 30 MINUTES\n\nPress:\nSpaceBar to pause the timer\nEscape key to exit the programm\n");
+            Console.WriteLine($"TIMER IS STARTED AND SET ON {timer.TotalSeconds} seconds\n\nPress:\nSpaceBar to pause the timer\nEscape key to exit the programm\n");
             bool shouldDisplayMessageBox = false;
             DialogResult res; // create dialog window
             for (int i = 0; i <= timer.TotalSeconds; i++)
@@ -66,12 +66,14 @@ namespace Senior_Pomodorro
             if (shouldDisplayMessageBox == true) //if user dont press key or cycle is over
             {
                 Console.WriteLine("TIMER IS UP!!");
-                Melody.Grasshoper();
+                Thread thread = new Thread(Melody.Grasshoper) { IsBackground = true};
+                thread.Start();
+                //Melody.Grasshoper();
                 res = MessageBox.Show("Please turn off the timer", "TIMER IS UP!!"); //display messageBox
                 if (res == DialogResult.OK || res == DialogResult.Cancel)
                 {
                     Application.Exit(); // close MessageBox
-                    return true;
+                    return false;
                 }
                 return false;
             }
